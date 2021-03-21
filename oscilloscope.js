@@ -181,6 +181,7 @@ var SignalGenerator =
 			for (var i=0; i<bufferSize; i++)
 			{
 				var t = n/sampleRate;
+				console.log(t);
 
 				var a = oldA;
 				var b = oldB;
@@ -201,6 +202,8 @@ var SignalGenerator =
 				n += 1;
 			}
 		}
+		var p_t = timeInSamples/sampleRate;
+		console.log("TIME IS: "+p_t);
 
 		SignalGenerator.timeInSamples += AudioSystem.bufferSize;
 		SignalGenerator.oldA = newA;
