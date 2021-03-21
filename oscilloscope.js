@@ -161,9 +161,10 @@ var SignalGenerator =
 		else if ((newA == oldA) && (newB == oldB))
 		{
 			var n = timeInSamples;
+            var t;
 			for (var i=0; i<bufferSize; i++)
 			{
-				var t = n/sampleRate;
+				t = n/sampleRate;
 				var a = newA;
 				var b = newB;
 				var mx = xMic[i];
@@ -180,7 +181,7 @@ var SignalGenerator =
 			var n = timeInSamples;
 			for (var i=0; i<bufferSize; i++)
 			{
-				var t = n/sampleRate;
+				t = n/sampleRate;
 
 				var a = oldA;
 				var b = oldB;
@@ -200,7 +201,11 @@ var SignalGenerator =
 				yOut[i] = y;
 				n += 1;
 			}
+        console.log("TIME IS: " + t);
+        console.log("YEAH1");
 		}
+        p_t = n/sampleRate;
+        console.log("TIME: " + p_t);
 
 		SignalGenerator.timeInSamples += AudioSystem.bufferSize;
 		SignalGenerator.oldA = newA;
@@ -1037,6 +1042,33 @@ function drawCRTFrame(timeStamp)
 	Render.drawCRT();
 	requestAnimationFrame(drawCRTFrame);
 }
+
+//setup key listener to restart time when "r" is pressed
+document.addEventListener("keyup", event => {
+  if (event.isComposing || event.keyCode === 229) {
+    return;
+  }
+    if (event.keyCode === 82){
+        console.log("refresh");
+        SignalGenerator.timeInSamples = 0;
+    }
+});
+
+document.addEventListener('mousedown', function(ev) {
+    ev.preventDefault();
+    mcanvas = document.getElementById("crtCanvas");
+    mcanvas.style.visibility="hidden";
+    return false;
+}, false);
+
+document.addEventListener('mouseup', function(ev) {
+    ev.preventDefault();
+    console.log(ev);
+    mcanvas = document.getElementById("crtCanvas");
+    mcanvas.style.visibility="visible";
+    SignalGenerator.timeInSamples = 0;
+    return false;
+}, false);
 
 Filter.init(512, 8, 6);
 AudioSystem.init(512);
